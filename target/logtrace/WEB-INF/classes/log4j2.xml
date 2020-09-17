@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+	<appenders>
+		<!-- 在命令台输出 可注释		-->
+		<Console name="Console" target="SYSTEM_OUT">
+<!--	%d{yyyy-MM-dd HH:mm:ss} @ %C:%L @ %m%n		-->
+			<PatternLayout
+				pattern="##%-5level %d{yyyy-MM-dd HH:mm:ss} %C.%M(L:%L)%n>>%msg%n" />
+		</Console>
+
+
+
+		<RollingFile name="userController" fileName="logs/userController/userController.log"
+			filePattern="logs/userController/userController-$${date:yyyy-MM}/userController-%d{MM-dd-yyyy}-%i.log" >
+			<PatternLayout
+				pattern="%-5level %d{yyyy-MM-dd HH:mm:ss} @ %C.%M:%L @ %m%n" />
+			<!-- 达到指定大小则情空文件然后生成新的文件			-->
+			<SizeBasedTriggeringPolicy size="5 MB" />
+		</RollingFile>
+
+		<RollingFile name="tm" fileName="logs/tm/tm.log"
+					 filePattern="logs/c3p0/$${date:yyyy-MM}/c3p0-%d{MM-dd-yyyy}-%i.log.gz" >
+			<PatternLayout
+					pattern="%-5level %d{yyyy-MM-dd HH:mm:ss} @ %C.%M:%L @ %m%n" />
+			<SizeBasedTriggeringPolicy size="5 MB" />
+			<!--			<DefaultRolloverStrategy>-->
+			<!--				<Delete basePath="E:/logs/c3p0" maxDepth="2">-->
+			<!--					<IfFileName glob="*.log.gz" />-->
+			<!--					<IfLastModified age="5s" />-->
+			<!--				</Delete>-->
+			<!--			</DefaultRolloverStrategy>-->
+		</RollingFile>
+
+	</appenders>
+
+	<loggers>
+		<!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+		<logger name="org.mybatis" level="info" additivity="false">
+			<AppenderRef ref="Console"/>
+		</logger>
+
+		<!--监控系统信息-->
+		<!--若是additivity设为false，则 子Logger 只会在自己的appender里输出，而不会在 父Logger 的appender里输出。-->
+		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
+
+		<Logger name="org.apache" level="info" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
+
+<!--		<root level="info">-->
+<!--			<appender-ref ref="Console" />-->
+<!--			<appender-ref ref="c3p0" />-->
+<!--			<appender-ref ref="tm" />-->
+<!--		</root>-->
+
+		<!-- 指定类，一个类的日志内容写入一个文件		-->
+		<logger name="com.hong.controller.UserController" level="info" additivity="true">
+			<appender-ref ref="userController" />
+		</logger>
+
+		<logger name="com.hong.controller.LogController" level="info" additivity="true">
+			<appender-ref ref="tm" />
+		</logger>
+	</loggers>
+</configuration>  
