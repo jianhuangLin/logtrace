@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.hong.mapper.UserMenuMapper">
+
+    <resultMap type="com.hong.entity.bean.UserMenu" id="BaseColumn">
+        <id column="um_id" property="umId" />
+        <result column="id" property="id" />
+        <result column="menu_id" property="menuId" />
+        <result column="state" property="state" />
+        <association property="user" javaType="com.hong.entity.bean.User">
+            <id column="id" property="id" />
+            <result column="user_name" property="userName" />
+            <result column="pass_word" property="passWord" />
+            <result column="user_desc" property="userDesc" />
+            <result column="create_time" property="createTime" />
+        </association>
+        <association property="menu" javaType="com.hong.entity.bean.Menu">
+            <id column="menu_id" property="menuId" />
+            <result column="menu_name" property="menuName" />
+            <result column="menu_desc" property="menuDesc" />
+            <result column="create_time" property="createTime" />
+        </association>
+    </resultMap>
+
+    <sql id="base">
+um.menu_id ,
+um.id,
+um.um_id,
+um.state
+</sql>
+
+    <sql id="userColumn">
+u.id,
+u.user_name
+</sql>
+
+    <sql id="menuColumn">
+m.menu_id,
+m.menu_name,
+m.menu_desc
+</sql>
+
+    <select id="findUserMenuById" resultMap="BaseColumn">
+        select
+        <include refid="base" />,
+        <include refid="userColumn" />,
+        <include refid="menuColumn" />
+        from user_menu_info um
+        INNER JOIN user_info u on u.id=um.id
+        INNER JOIN menu_info m on m.menu_id = um.menu_id
+        where u.id = #{id}
+    </select>
+
+    <insert id="insertUserMenu" parameterType="UserMenu">
+        <selectKey keyProperty="umId" resultType="java.lang.String" order="BEFORE">
+            select   REPLACE(uuid(),'-','')
+        </selectKey>
+        insert into user_menu_info(um_id,id,menu_id,state,create_time)
+          values  (#{umId},#{id},#{menuId},#{state},#{createTime})
+    </insert>
+
+
+    <select id="findUserAndMenuListByName" resultMap="BaseColumn">
+        SELECT
+        u.id,u.user_name,u.user_desc,m.menu_desc,m.menu_name,um.state
+        FROM
+	    user_menu_info um
+        JOIN menu_info m ON m.menu_id = um.menu_id
+        JOIN user_info u ON u.id = um.id
+        WHERE
+	    u.user_name = #{userName}
+    </select>
+
+
+
+</mapper>

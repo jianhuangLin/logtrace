@@ -1,0 +1,44 @@
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/
+      suffix: .jsp
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hong_test?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+
+ftp:
+  hostname: 192.168.67.1
+  password: ''
+  port: 21
+  workingPath: /
+  username: anonymous
+
+server:
+  servlet:
+    session:
+      timeout: PT35M
+
+
+#mybatis的相关配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.hong.entity.bean
+
+# # mybatis 打印sql
+#logging:
+#  level:
+#    com.hong.mapper : debug
+
