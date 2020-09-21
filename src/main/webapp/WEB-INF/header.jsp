@@ -20,6 +20,10 @@
 </head>
 
 <body>
+<<<<<<< HEAD
+=======
+<%--<blockquote class="layui-elem-quote"><h1>header</h1></blockquote>--%>
+>>>>>>> 353293a684d5dbea31f5691fb95dd5f14ffb54cb
 
 <ul class="layui-nav layui-bg-cyan" >
     <li class="layui-nav-item">
