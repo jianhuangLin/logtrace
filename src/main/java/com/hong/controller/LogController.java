@@ -30,12 +30,8 @@ import static com.hong.util.LogUtils.getFiles;
 public class LogController {
 
     //引入日志时需要导入的Jar是：import org.slf4j.Logger;和import org.slf4j.LoggerFactory;
-    private static Logger log ;
+    private static Logger log = LoggerFactory.getLogger(LogController.class);
 
-    //遗留一个问题，每次启动项目多生成一个${sys文件，后续再处理吧
-    static {
-        log = LoggerFactory.getLogger(LogController.class);
-    }
 
     @RequestMapping("/")
     public String index() {
